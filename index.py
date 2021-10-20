@@ -37,7 +37,7 @@ def insertIndentToFormula(formula_string):
 
 	newFormula = formula_string
 	for p in reversed(ToBeInsertedPosition):
-		newFormula = insertStringToString(newFormula, '\n'+'    '*(p[1]+1), p[0]+1)
+		newFormula = insertStringToString(newFormula, '\n'+'	'*(p[1]+1), p[0]+1)
 	# print(ToBeInsertedPosition)
 	return newFormula
 
@@ -90,23 +90,23 @@ app = Flask(__name__)
 def index():
 
 
-    return render_template("index.html")
+	return render_template("index.html")
 
 @app.route("/parse", methods=['GET', 'POST'])
 def parsedFormula():
-    if request.method == 'POST':
-        try:
-	        print(request.form)
-	        
-	        parsedFormula = autoFormat(request.form['formula_input'])
-	        print(parsedFormula)
-	        return render_template("index.html", parsedFormula=parsedFormula, unparsedFormula=request.form['formula_input'])
-	     except:
-	     	errorMessage = 'Syntax error. Please check your raw formula. the number of left bracket should be equal to the number of right bracket.'
-	     	return render_template("index.html", parsedFormula=errorMessage, unparsedFormula=request.form['formula_input'])
-    else:
-        return render_template("index.html")
+	if request.method == 'POST':
+		try:
+			print(request.form)
+			
+			parsedFormula = autoFormat(request.form['formula_input'])
+			print(parsedFormula)
+			return render_template("index.html", parsedFormula=parsedFormula, unparsedFormula=request.form['formula_input'])
+		except:
+		 	errorMessage = '*****Syntax error. Please check your raw formula. the number of left bracket should be equal to the number of right bracket.*****'
+		 	return render_template("index.html", parsedFormula=errorMessage, unparsedFormula=request.form['formula_input'])
+	else:
+		return render_template("index.html")
 
 if __name__ == "__main__":
 
-    app.run(debug=False)
+	app.run(debug=False)
