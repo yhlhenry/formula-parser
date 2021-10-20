@@ -47,6 +47,7 @@ def replaceBracketWithoutArgument(formula_string):
 	return newFormulaString 
 
 def replaceBackBracketWithoutArgument(formula_string):
+	print("replaceBackBracketWithoutArgument inside")
 	newFormulaString = formula_string.replace('BracketWithoutArgument', '()')
 	return newFormulaString 
 
@@ -96,6 +97,7 @@ def parsedFormula():
     if request.method == 'POST':
         # 偷看一下 request.form 
         print(request.form)
+        replaceBackBracketWithoutArgument('test')
         parsedFormula = "autoFormat(request.form['formula_input'])"
         print(parsedFormula)
         return render_template("index.html", parsedFormula=parsedFormula)
