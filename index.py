@@ -2,6 +2,9 @@ from flask import Flask, request, render_template
 # import PySimpleGUIWeb as sg
 import os
 import sys
+import re
+
+
 
 
 def isThisACommaBelongToIf(cha, is_between_quote, bracket_queue):
@@ -22,38 +25,45 @@ def insertIndentToFormula(formula_string):
 	ToBeInsertedPosition = []
 	bracket_queue = []
 	is_between_quote = False
+	previousBracket = ''
+	candidateList = []
+	targetBracket = ['(',')']
 	for i, c in enumerate(formula_string):	
+		if(c in targetBracket):
+			candidateList.append(c)
+	targetCount = 0
+	for i, c in enumerate(formula_string):
 		if c == '"':
 			is_between_quote = not(is_between_quote)		
 		if c == '(':
-			ToBeInsertedPosition.append([i,len(bracket_queue)])
+			if candidateList[targetCount+1] != ')':
+				ToBeInsertedPosition.append([i,len(bracket_queue)])
 			bracket_queue.append(c)
+			previousBracket = c
 		elif c == ')':
-			ToBeInsertedPosition.append([i-1,len(bracket_queue)-2])
+			if candidateList[targetCount-1] != '(':
+				ToBeInsertedPosition.append([i-1,len(bracket_queue)-2])
 			bracket_queue.pop()
+			previousBracket = c
 		elif c == ',':
 			ToBeInsertedPosition.append([i,len(bracket_queue)-1])
-			
-
+		if(c in targetBracket):
+			targetCount = targetCount + 1
 	newFormula = formula_string
 	for p in reversed(ToBeInsertedPosition):
 		newFormula = insertStringToString(newFormula, '\n'+'	'*(p[1]+1), p[0]+1)
-	# print(ToBeInsertedPosition)
 	return newFormula
 
-
-def replaceBracketWithoutArgument(formula_string):
-	newFormulaString = formula_string.replace('()', 'BracketWithoutArgument')
-	return newFormulaString 
-
-def replaceBackBracketWithoutArgument(formula_string):
-	newFormulaString = formula_string.replace('BracketWithoutArgument', '()')
-	return newFormulaString 
+def stripwhite(text):
+    lst = text.split('"')
+    for i, item in enumerate(lst):
+        if not i % 2:
+            lst[i] = re.sub("\s+", "", item)
+    return '"'.join(lst)
 
 def autoFormat(formula_string):
 	formula_string = formula_string.replace('\t','').replace('\n','').replace('\r','')
-	# print(formula_string)
-	formula_string = replaceBracketWithoutArgument(formula_string)
+	formula_string = stripwhite(formula_string)
 	bracket_list = ['(', ')']
 	bracket_queue = []
 	start_position_of_IF = 0
@@ -62,7 +72,6 @@ def autoFormat(formula_string):
 	IF_comma_position = []
 	formula_string = insertIndentToFormula(formula_string)
 	for i, c in enumerate(formula_string):	
-		# print(i,c)	
 		if c == '"':
 			is_between_quote = not(is_between_quote)
 
@@ -78,10 +87,7 @@ def autoFormat(formula_string):
 		if isThisACommaBelongToIf(c, is_between_quote, bracket_queue):
 			IF_comma_position.append(i)
 
-	formula_string = replaceBackBracketWithoutArgument(formula_string)
 	return formula_string
-
-
 
 
 app = Flask(__name__)
@@ -109,4 +115,4 @@ def parsedFormula():
 
 if __name__ == "__main__":
 
-	app.run(debug=False)
+	app.run(debug=True)
