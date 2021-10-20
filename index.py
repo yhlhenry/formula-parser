@@ -95,12 +95,14 @@ def index():
 @app.route("/parse", methods=['GET', 'POST'])
 def parsedFormula():
     if request.method == 'POST':
-        # 偷看一下 request.form 
-        print(request.form)
-        # replaceBackBracketWithoutArgument('test')
-        parsedFormula = autoFormat(request.form['formula_input'])
-        print(parsedFormula)
-        return render_template("index.html", parsedFormula=parsedFormula, unparsedFormula=request.form['formula_input'])
+        try:
+	        print(request.form)
+	        
+	        parsedFormula = autoFormat(request.form['formula_input'])
+	        print(parsedFormula)
+	        return render_template("index.html", parsedFormula=parsedFormula, unparsedFormula=request.form['formula_input'])
+	     except:
+	     	return render_template("index.html", parsedFormula="Syntax error. Please check your raw formula. the number of left bracket should be equal to the number of right bracket.", unparsedFormula=request.form['formula_input'])
     else:
         return render_template("index.html")
 
