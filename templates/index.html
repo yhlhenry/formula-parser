@@ -7,22 +7,23 @@
     <!-- <link rel="stylesheet" href="/Users/frankdu/Desktop/website_example/static/index.css"> -->
   </head>
   <body>
-    <h1 id="inspired">Inspired by Spectrum Art Masterpiece from Frank</h1>
+    <h1 id="inspired">Transform Complex Formula to Readable Format</h1>
 
 
 <table border="1" class="art">
   <tr>
-    <td id="a">
+    <td id="a" style="vertical-align: top;">
       <form method="post" action="/parse">
-          <label for="input_example">請輸入：</label>
-          <textarea name="text" id="input_example" placeholder="在這邊輸入" name="formula_input"></textarea>
-          <!-- <input type="text" id="input_example" placeholder="在這邊輸入" name="user_input"> -->
-          <input type="submit">
+          <!-- <label for="input_example">請輸入：</label> -->
+          <textarea  id="input_example" placeholder="input raw formula" name="formula_input" style="width: 99%;height: 85vh">{{unparsedFormula}}</textarea>
+          <br/><input type="submit">
       </form>      
 
     </td>
-    <td id="b">
-      {{parsedFormula}}
+    <td id="b"  style="vertical-align: top;">
+      <pre>
+{{parsedFormula}}
+      </pre>
     </td>
     <!-- <td id="c"></td>
     <td id="d"></td>
@@ -43,11 +44,12 @@
 table{
   margin-top: 30px;
   margin:auto;
+  width: 90%; 
 }
 td{
   background-color: black;
-  height: 300px;
-  width: 200px;
+  /*height: 800px;*/
+  width: 50%; 
 }
 #a{
 background-color:  #FE938C;

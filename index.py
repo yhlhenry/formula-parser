@@ -47,13 +47,12 @@ def replaceBracketWithoutArgument(formula_string):
 	return newFormulaString 
 
 def replaceBackBracketWithoutArgument(formula_string):
-	print("replaceBackBracketWithoutArgument inside")
 	newFormulaString = formula_string.replace('BracketWithoutArgument', '()')
 	return newFormulaString 
 
 def autoFormat(formula_string):
-	formula_string = formula_string.replace('\t','').replace('\n','')
-	print(formula_string)
+	formula_string = formula_string.replace('\t','').replace('\n','').replace('\r','')
+	# print(formula_string)
 	formula_string = replaceBracketWithoutArgument(formula_string)
 	bracket_list = ['(', ')']
 	bracket_queue = []
@@ -84,6 +83,7 @@ def autoFormat(formula_string):
 
 
 
+
 app = Flask(__name__)
 
 @app.route("/") ##www.domain.com
@@ -97,10 +97,10 @@ def parsedFormula():
     if request.method == 'POST':
         # 偷看一下 request.form 
         print(request.form)
-        replaceBackBracketWithoutArgument('test')
-        parsedFormula = "autoFormat(request.form['formula_input'])"
+        # replaceBackBracketWithoutArgument('test')
+        parsedFormula = autoFormat(request.form['formula_input'])
         print(parsedFormula)
-        return render_template("index.html", parsedFormula=parsedFormula)
+        return render_template("index.html", parsedFormula=parsedFormula, unparsedFormula=request.form['formula_input'])
     else:
         return render_template("index.html")
 
