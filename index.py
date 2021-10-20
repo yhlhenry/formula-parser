@@ -52,7 +52,7 @@ def replaceBackBracketWithoutArgument(formula_string):
 
 def autoFormat(formula_string):
 	formula_string = formula_string.replace('\t','').replace('\n','')
-	# print(formula_string)
+	print(formula_string)
 	formula_string = replaceBracketWithoutArgument(formula_string)
 	bracket_list = ['(', ')']
 	bracket_queue = []
