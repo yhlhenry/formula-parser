@@ -96,7 +96,7 @@ def parsedFormula():
     if request.method == 'POST':
         # 偷看一下 request.form 
         print(request.form)
-        parsedFormula = autoFormat(request.form['formula_input'])
+        parsedFormula = "autoFormat(request.form['formula_input'])"
         print(parsedFormula)
         return render_template("index.html", parsedFormula=parsedFormula)
     else:
