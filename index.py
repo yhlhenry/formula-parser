@@ -92,14 +92,15 @@ def index():
     return render_template("index.html")
 
 @app.route("/parse", methods=['GET', 'POST'])
-def select_records():
+def parsedFormula():
     if request.method == 'POST':
         # 偷看一下 request.form 
         print(request.form)
         parsedFormula = autoFormat(request.form['formula_input'])
+        print(parsedFormula)
         return render_template("index.html", parsedFormula=parsedFormula)
-    # else:
-    #     return render_template("select_records.html")
+    else:
+        return render_template("index.html")
 
 if __name__ == "__main__":
 
