@@ -102,7 +102,8 @@ def parsedFormula():
 	        print(parsedFormula)
 	        return render_template("index.html", parsedFormula=parsedFormula, unparsedFormula=request.form['formula_input'])
 	     except:
-	     	return render_template("index.html", parsedFormula="Syntax error. Please check your raw formula. the number of left bracket should be equal to the number of right bracket.", unparsedFormula=request.form['formula_input'])
+	     	errorMessage = 'Syntax error. Please check your raw formula. the number of left bracket should be equal to the number of right bracket.'
+	     	return render_template("index.html", parsedFormula=errorMessage, unparsedFormula=request.form['formula_input'])
     else:
         return render_template("index.html")
 
