@@ -62,7 +62,7 @@ def stripwhite(text):
     return '"'.join(lst)
 
 def autoFormat(formula_string):
-	formula_string = formula_string.replace('\t','').replace('\n','').replace('\r','')
+	formula_string = formula_string.replace('\t','').replace('\n','').replace('\r','').replace('&&',' && ').replace('||',' || ')
 	formula_string = stripwhite(formula_string)
 	bracket_list = ['(', ')']
 	bracket_queue = []
