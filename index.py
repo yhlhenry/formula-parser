@@ -27,7 +27,7 @@ def insertIndentToFormula(formula_string):
 	is_between_quote = False
 	previousBracket = ''
 	candidateList = []
-	targetBracket = ['(',')']
+	targetBracket = ['(',')','&']
 	for i, c in enumerate(formula_string):	
 		if(c in targetBracket):
 			candidateList.append(c)
@@ -47,6 +47,9 @@ def insertIndentToFormula(formula_string):
 			previousBracket = c
 		elif c == ',':
 			ToBeInsertedPosition.append([i,len(bracket_queue)-1])
+		elif c == '&' and candidateList[targetCount-1] == '&':
+			ToBeInsertedPosition.append([i-2,len(bracket_queue)-2])
+
 		if(c in targetBracket):
 			targetCount = targetCount + 1
 	newFormula = formula_string
@@ -62,8 +65,9 @@ def stripwhite(text):
     return '"'.join(lst)
 
 def autoFormat(formula_string):
-	formula_string = formula_string.replace('\t','').replace('\n','').replace('\r','').replace(r'&&',r' && ').replace(r'||',r' || ')
+	print('origin text', formula_string)
 	formula_string = stripwhite(formula_string)
+	formula_string = formula_string.replace('\t','').replace('\n','').replace('\r','').replace('&&',' && ').replace('||',' || ')
 	bracket_list = ['(', ')']
 	bracket_queue = []
 	start_position_of_IF = 0
@@ -71,21 +75,21 @@ def autoFormat(formula_string):
 	is_between_quote = False
 	IF_comma_position = []
 	formula_string = insertIndentToFormula(formula_string)
-	for i, c in enumerate(formula_string):	
-		if c == '"':
-			is_between_quote = not(is_between_quote)
+	# for i, c in enumerate(formula_string):	
+	# 	if c == '"':
+	# 		is_between_quote = not(is_between_quote)
 
-		if c == '(':
-			if len(bracket_queue) == 0:	 
-				start_position_of_IF = i
-			bracket_queue.append(c)
-		elif c == ')':
-			bracket_queue.pop()
-			if len(bracket_queue) == 0:	
-				end_position_of_IF = i
+	# 	if c == '(':
+	# 		if len(bracket_queue) == 0:	 
+	# 			start_position_of_IF = i
+	# 		bracket_queue.append(c)
+	# 	elif c == ')':
+	# 		bracket_queue.pop()
+	# 		if len(bracket_queue) == 0:	
+	# 			end_position_of_IF = i
 
-		if isThisACommaBelongToIf(c, is_between_quote, bracket_queue):
-			IF_comma_position.append(i)
+	# 	if isThisACommaBelongToIf(c, is_between_quote, bracket_queue):
+	# 		IF_comma_position.append(i)
 
 	return formula_string
 
